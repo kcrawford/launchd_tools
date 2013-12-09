@@ -1,0 +1,5 @@
+error handling: binary plists, plists that are unparsable, plists that are not readable
+have it handle glob argument
+usage
+tests
+

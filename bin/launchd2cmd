@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'rexml/document'
+
+include REXML
+
+plist_path = ARGV[0]
+
+if !File.exist?(plist_path)
+  puts "No launchd job found at #{plist_path}"
+  exit 1
+end
+
+f = File.open(plist_path, "r")
+is_binary = (f.read(6) == "bplist")
+f.close
+
+
+if is_binary
+  doc_source = `plutil -convert xml1 -o /dev/stdout '#{plist_path}'`
+else
+  doc_source = File.new(plist_path)
+end
+
+env = {}
+
+doc = Document.new(doc_source)
+environment_dict_element = REXML::XPath.first(doc, "plist/dict/key[text()='EnvironmentVariables']/following-sibling::dict")
+if environment_dict_element
+  REXML::XPath.match(environment_dict_element, 'key').each do |environment_key|
+    env[environment_key.text] = environment_key.next_sibling.next_sibling.text
+  end
+end
+
+args_element = REXML::XPath.first(doc, "plist/dict/key[text()='ProgramArguments']/following-sibling::array")
+if args_element
+  args_strings = XPath.match(args_element, 'string')
+  text_args = args_strings.map {|e| e.text }
+else
+  program_string_element = REXML::XPath.first(doc, "plist/dict/key[text()='Program']/following-sibling::string")
+  text_args = [program_string_element.text]
+end
+
+env_items = []
+env.each do |key,value|
+  env_items << "#{key}=#{value}"
+end
+
+puts (env_items + text_args).join(" ")
