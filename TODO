@@ -1,5 +1,6 @@
 error handling: binary plists, plists that are unparsable, plists that are not readable
 have it handle glob argument
+have it output a comment for the path perhaps with additional info
 usage
 tests
 

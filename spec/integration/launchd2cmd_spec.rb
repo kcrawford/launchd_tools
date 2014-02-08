@@ -4,6 +4,10 @@ describe 'running launchd2cmd' do
       output = `bundle exec bin/launchd2cmd spec/fixtures/LaunchAgents/com.apple.storeagent.plist`
       expect(output.chomp).to eql("/System/Library/PrivateFrameworks/CommerceKit.framework/Versions/A/Resources/storeagent")
     end
+    it "outputs a comment line with path to the plist" do
+      output = `bundle exec bin/launchd2cmd spec/fixtures/LaunchAgents/com.apple.storeagent.plist`
+      expect(output.chomp).to include?("# spec/fixtures/LaunchAgents/com.apple.storeagent.plist")
+    end
   end
   context 'bad file path' do
     it "outputs error" do
