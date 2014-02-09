@@ -28,16 +28,19 @@ module LaunchdTools
     end
 
     def parse
-        path_parser.parse
       begin
         path_parser.parse
       rescue
-        raise UnparsablePlist.new("Oh no")
+        raise UnparsablePlist.new
       end
     end
 
     def path_parser
       PathParser.new(self)
+    end
+
+    def expanded
+      File.expand_path(path)
     end
 
   end

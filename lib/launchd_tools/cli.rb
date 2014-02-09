@@ -11,8 +11,11 @@ module LaunchdTools
     end
 
     def process_each_path
-      paths.each do |path|
-        print Path.new(path).validate.parse.to_s
+      puts
+      paths.each do |path_string|
+        path = Path.new(path_string).validate
+        puts "# #{path.expanded}"
+        puts path.parse.to_s
       end
     end
   end

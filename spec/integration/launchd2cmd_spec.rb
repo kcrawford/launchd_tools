@@ -2,11 +2,11 @@ describe 'running launchd2cmd' do
   context 'launch agent' do
     it 'outputs the command' do
       output = `bundle exec bin/launchd2cmd spec/fixtures/LaunchAgents/com.apple.storeagent.plist`
-      expect(output.chomp).to eql("/System/Library/PrivateFrameworks/CommerceKit.framework/Versions/A/Resources/storeagent")
+      expect(output.chomp).to include("/System/Library/PrivateFrameworks/CommerceKit.framework/Versions/A/Resources/storeagent")
     end
     it "outputs a comment line with path to the plist" do
       output = `bundle exec bin/launchd2cmd spec/fixtures/LaunchAgents/com.apple.storeagent.plist`
-      expect(output.chomp).to include?("# spec/fixtures/LaunchAgents/com.apple.storeagent.plist")
+      expect(output.chomp).to include("# #{File.expand_path("spec/fixtures/LaunchAgents/com.apple.storeagent.plist")}")
     end
   end
   context 'bad file path' do
@@ -19,14 +19,14 @@ describe 'running launchd2cmd' do
     context 'with environment variables' do
       it 'includes argument and environment variables in output' do
         output = `bundle exec bin/launchd2cmd spec/fixtures/LaunchDaemons/org.apache.httpd.plist`
-        expect(output.chomp).to eql("XPC_SERVICES_UNAVAILABLE=1 /usr/sbin/httpd -D FOREGROUND")
+        expect(output.chomp).to include("XPC_SERVICES_UNAVAILABLE=1 /usr/sbin/httpd -D FOREGROUND")
       end
     end
   end
   context "binary plist" do
     it "handles it without error" do
       output = `bundle exec bin/launchd2cmd spec/fixtures/LaunchDaemons/com.apple.opendirectoryd.plist`
-      expect(output.chomp).to eql("__CFPREFERENCES_AVOID_DAEMON=1 __CF_USER_TEXT_ENCODING=0x0:0:0 /usr/libexec/opendirectoryd")
+      expect(output.chomp).to include("__CFPREFERENCES_AVOID_DAEMON=1 __CF_USER_TEXT_ENCODING=0x0:0:0 /usr/libexec/opendirectoryd")
     end
   end
 end
