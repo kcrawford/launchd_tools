@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = LaunchdTools::VERSION
   spec.authors       = ["Kyle Crawford"]
   spec.email         = ["kcrwfrd@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Provides tools for converting from command line arguments to a formatted launchd plist and vice versa}
+  spec.summary       = %q{launchd tools convert from command to launchd and launchd to command}
   spec.homepage      = ""
   spec.license       = "MIT"
 
