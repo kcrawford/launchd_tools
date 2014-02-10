@@ -9,6 +9,19 @@ describe 'running launchd2cmd' do
       expect(output.chomp).to include("# #{File.expand_path("spec/fixtures/LaunchAgents/com.apple.storeagent.plist")}")
     end
   end
+  context "no arguments" do
+    it "outputs usage info" do
+      output = `bundle exec bin/launchd2cmd`
+      expect(output.chomp).to include("Usage: ")
+    end
+  end
+  context "help option" do
+    it "outputs usage info" do
+      output = `bundle exec bin/launchd2cmd -h`
+      expect(output.chomp).to include("Usage: ")
+    end
+  end
+
   context 'bad file path' do
     it "outputs error" do
       output = `bundle exec bin/launchd2cmd not/a/real/path`
