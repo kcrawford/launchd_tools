@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'launchd_tools/launchd_plist'
+require 'launchd_tools/cmd2launchd_cli'
 
-include LaunchdTools
-
-plist = LaunchdPlist.new
-plist.add_program_args(ARGV)
-plist.to_stdout
+LaunchdTools::Cmd2LaunchdCli.new(ARGV).run

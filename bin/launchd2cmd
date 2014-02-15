@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'launchd_tools/cli'
+require 'launchd_tools/launchd2cmd_cli'
 
-LaunchdTools::Cli.new(ARGV).run
+LaunchdTools::Launchd2CmdCli.new(ARGV).run

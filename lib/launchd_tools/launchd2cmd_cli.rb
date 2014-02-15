@@ -1,7 +1,7 @@
 require 'launchd_tools/path'
 require 'optparse'
 module LaunchdTools
-  class Cli
+  class Launchd2CmdCli
     attr_reader :paths, :args
     def initialize(args)
       showing_help = false
