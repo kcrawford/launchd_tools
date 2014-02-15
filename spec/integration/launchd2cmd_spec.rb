@@ -22,10 +22,30 @@ describe 'running launchd2cmd' do
     end
   end
 
-  context 'bad file path' do
-    it "outputs error" do
-      output = `bundle exec bin/launchd2cmd not/a/real/path`
-      expect(output).to include("No launchd job found at not/a/real/path")
+  context "inaccessible file" do
+    it "outputs relevant error message" do
+      inaccessible_path = 'spec/fixtures/LaunchDaemons/inaccessible.plist'
+      File.chmod(0000, inaccessible_path)
+      output = `bundle exec bin/launchd2cmd #{inaccessible_path}`
+      File.chmod(0644, inaccessible_path)
+      require 'etc'
+      username = Etc.getpwuid(Process.euid).name
+      expect(output).to include("Error: user #{username} does not have access to read launchd job")
+    end
+  end
+
+  context "unparsable file" do
+    it "outputs relevant error message" do
+      output = `bundle exec bin/launchd2cmd #{__FILE__}`
+      expect(output).to include("Error: unable to parse launchd job")
+    end
+  end
+
+  context 'bad file paths' do
+    it "outputs relevant error message" do
+      output = `bundle exec bin/launchd2cmd not/a/real/path and/another/bad/path`
+      expect(output).to include("No launchd job found at 'not/a/real/path'")
+      expect(output).to include("No launchd job found at 'and/another/bad/path'")
     end
   end
   context 'launch daemon' do

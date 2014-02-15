@@ -17,7 +17,8 @@ module LaunchdTools
       f = File.open(path, "r")
       f.read(6) == "bplist"
     ensure
-      f.close
+      f.close if f
     end
   end
+
 end

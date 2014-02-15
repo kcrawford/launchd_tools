@@ -4,12 +4,10 @@ require 'launchd_tools/path_content'
 module LaunchdTools
   class Path
 
-    class PathMissingError < Exception
-      def exit_status; 1 ; end
+    class UnparsablePlist < Exception
     end
 
-    class UnparsablePlist < Exception
-      def exit_status; 2 ; end
+    class PermissionsError < Exception
     end
 
     attr_reader :path
@@ -30,6 +28,8 @@ module LaunchdTools
     def parse
       begin
         path_parser.parse
+      rescue Errno::EACCES
+        raise PermissionsError.new
       rescue
         raise UnparsablePlist.new
       end
