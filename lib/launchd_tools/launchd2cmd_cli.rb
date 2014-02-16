@@ -32,17 +32,7 @@ module LaunchdTools
       errors = 0
       if paths
         if paths.length > 0
-          begin
-            process_each_path
-          rescue LaunchdTools::Path::UnparsablePlist
-            puts "Error: unable to parse launchd job"
-            errors += 1
-          rescue LaunchdTools::Path::PermissionsError
-            require 'etc'
-            username = Etc.getpwuid(Process.euid).name
-            puts "Error: user #{username} does not have access to read launchd job"
-            errors += 1
-          end
+          errors = process_each_path
         else
           args.each {|arg| puts "No launchd job found at '#{arg}'" }
           exit 1
@@ -51,13 +41,31 @@ module LaunchdTools
       exit 2 if errors > 0
     end
 
-    def process_each_path
-      puts
-      paths.each do |path_string|
+    def process_path(path_string)
+      error_count = 0
+      begin
         path = Path.new(path_string).validate
         puts "# #{path.expanded}"
         puts path.parse.to_s
+      rescue LaunchdTools::Path::UnparsablePlist
+        puts "Error: unable to parse launchd job\n"
+        error_count = 1
+      rescue LaunchdTools::Path::PermissionsError
+        require 'etc'
+        username = Etc.getpwuid(Process.euid).name
+        puts "Error: user #{username} does not have access to read launchd job\n"
+        error_count = 1
       end
+      return error_count
+    end
+
+    def process_each_path
+      error_count = 0
+      puts
+      paths.each do |path_string|
+        error_count += process_path(path_string)
+      end
+      return error_count
     end
   end
 end

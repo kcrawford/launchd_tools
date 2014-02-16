@@ -1,4 +1,2 @@
-Might want to shell escape output commands so they are directly usable as commands
-  http://svn.ruby-lang.org/repos/ruby/trunk/lib/shellwords.rb
 Output errors to stderr
 Test for exit statuses

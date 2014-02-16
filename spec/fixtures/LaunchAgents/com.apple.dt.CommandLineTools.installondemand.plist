@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.apple.dt.CommandLineTools.installondemand</string>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.dt.CommandLineTools.installondemand</key>
+		<true/>
+	</dict>
+	<key>OnDemand</key>
+	<true/>
+	<key>EnableTransactions</key>
+	<true/>
+	<key>Program</key>
+	<string>/System/Library/CoreServices/Install Command Line Developer Tools.app/Contents/MacOS/Install Command Line Developer Tools</string>
+	<key>LimitLoadToSessionType</key>
+	<string>Aqua</string>
+</dict>
+</plist>
