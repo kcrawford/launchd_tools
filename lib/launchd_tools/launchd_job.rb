@@ -19,6 +19,7 @@ module LaunchdTools
     end
 
     # from ruby's shellescape
+    # included here for ruby 1.8 compatibility
     def shellescape(str)
       str = str.to_s
 
