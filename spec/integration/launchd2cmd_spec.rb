@@ -66,6 +66,13 @@ describe 'running launchd2cmd' do
     end
   end
 
+  context "args are directories" do
+    it "lists contents of directory" do
+      command = "bundle exec bin/launchd2cmd spec/fixtures/LaunchAgents > /dev/null"
+      expect(system(command)).to be_true
+    end
+  end
+
   context "program arguments contain spaces" do
     it "escapes them for use in the shell" do
       output = `bundle exec bin/launchd2cmd spec/fixtures/LaunchAgents/com.apple.dt.CommandLineTools.installondemand.plist`

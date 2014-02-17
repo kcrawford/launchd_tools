@@ -24,8 +24,19 @@ module LaunchdTools
         puts opt_parser
       else
         @args = args
-        @paths = Dir.glob(args)
+        @paths = extract_paths(args)
       end
+    end
+
+    def extract_paths(path_args)
+      path_args = path_args.map do |path_arg|
+        if File.directory?(path_arg)
+          path_arg += "/" if path_arg[-1] != "/"
+          path_arg += "*"
+        end
+        path_arg
+      end
+      Dir.glob(path_args)
     end
 
     def run
