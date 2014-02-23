@@ -1,5 +1,3 @@
-Add README.md documentation on use as commands, use from ruby
-release gem
-release package made with fpm
+Release package made with fpm
 Output errors to stderr
 Test for exit statuses
