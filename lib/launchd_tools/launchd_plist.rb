@@ -32,11 +32,12 @@ module LaunchdTools
       end
     end
 
-    def to_stdout
+    def to_s
       formatter = REXML::Formatters::Pretty.new # (2)
       formatter.compact = true
-      formatter.write(doc, $stdout)
-      puts
+      xml_string = String.new
+      formatter.write(doc, xml_string)
+      xml_string
     end
   end
 end

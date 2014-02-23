@@ -31,7 +31,7 @@ module LaunchdTools
     def run
       plist = LaunchdPlist.new
       plist.add_program_args(args)
-      plist.to_stdout
+      puts plist.to_s
     end
   end
 end
