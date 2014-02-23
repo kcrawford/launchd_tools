@@ -48,52 +48,51 @@ Create a launchd plist from a command and arguments:
         </array>
       </dict>
     </plist>
+    
+## Packaging
+
+Use the excellent fpm https://github.com/jordansissel/fpm
+
+    gem install fpm
+    fpm -s gem -t osxpkg --osxpkg-identifier-prefix org.rubygems.kcrawford --no-gem-env-shebang launchd_tools
+
+The package will be output in the current directory as rubygem-launchd_tools-\<version\>.pkg
 
 ## Usage from Ruby
 
 ### Parsing a launchd plist
 
 ```ruby
->> require 'launchd_tools/path'
-=> false
->> sshd_plist_path =
-LaunchdTools::Path.new("/System/Library/LaunchDaemons/ssh.plist")
-=> #<LaunchdTools::Path:0x007f9a7b1a5f50
-@path="/System/Library/LaunchDaemons/ssh.plist">
->> sshd_job = sshd_plist_path.parse
-=> #<LaunchdTools::LaunchdJob:0x007f9a7aa6cc70
-@attributes={"EnvironmentVariables"=>[],
-"ProgramArguments"=>["/usr/sbin/sshd", "-i"]}>
->> sshd_job.program_arguments
-=> ["/usr/sbin/sshd", "-i"]
+require 'launchd_tools/path'
+sshd_plist_path = LaunchdTools::Path.new("/System/Library/LaunchDaemons/ssh.plist")
+sshd_job = sshd_plist_path.parse
+sshd_job.program_arguments
+# => ["/usr/sbin/sshd", "-i"]
 ```
 
 ### Creating a launchd plist
 
 ```ruby
->> require 'launchd_tools/launchd_plist'
-=> true
->> plist = LaunchdTools::LaunchdPlist.new
-=> #<LaunchdTools::LaunchdPlist:0x007fde1c434c78 @doc=<UNDEFINED> ...
-</>, @program_args_array_element=<array/>>
->> plist.add_program_args(["/usr/local/bin/daemon", "-f", "-o",
+require 'launchd_tools/launchd_plist'
+plist = LaunchdTools::LaunchdPlist.new
+plist.add_program_args(["/usr/local/bin/daemon", "-f", "-o",
 "/var/log/daemon.log"])
-=> ["/usr/local/bin/daemon", "-f", "-o", "/var/log/daemon.log"]
->> puts plist.to_s
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version='1.0'>
-  <dict>
-    <key>ProgramArguments</key>
-    <array>
-      <string>/usr/local/bin/daemon</string>
-      <string>-f</string>
-      <string>-o</string>
-      <string>/var/log/daemon.log</string>
-    </array>
-  </dict>
-</plist>
+plist.to_s
+# =>
+# <?xml version='1.0' encoding='UTF-8'?>
+#<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+#"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+#<plist version='1.0'>
+#  <dict>
+#    <key>ProgramArguments</key>
+#    <array>
+#      <string>/usr/local/bin/daemon</string>
+#      <string>-f</string>
+#      <string>-o</string>
+#      <string>/var/log/daemon.log</string>
+#    </array>
+#  </dict>
+#</plist>
 ```
 
 
